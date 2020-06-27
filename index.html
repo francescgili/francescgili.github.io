@@ -9,9 +9,9 @@
 
     <!-- <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/carousel/"> -->
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     
     <!-- Custom styles for this template -->
     <link href="css/carousel.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 
     <header>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Francesc.GF</a>
+        <a class="navbar-brand" href="#"><img src="img/fg.png" width="40" /></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -36,7 +36,7 @@
               <a class="nav-link" href="curiosity.html">Curiosity</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="alive.html">Alive</a>
+              <a class="nav-link" href="alive.html">Alive</a>
             </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0">
@@ -57,7 +57,7 @@
         </ol>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img class="first-slide" src="img/phpwall.jpg" alt="First slide">
+            <img class="first-slide" src="img/phpwall2.jpg" alt="First slide">
             <div class="container">
               <div class="carousel-caption text-left">
                 <h1 style="background-color: rgba(52, 58, 64, 0.9);">&lt;<span style="color: #ea3361;">me</span> <span style="color: #2ee00b;">developer</span>=<span style="color: #c9c90c;">"full stack"</span>/&gt;</h1>
@@ -107,22 +107,22 @@
         <!-- Three columns of text below the carousel -->
         <div class="row">
           <div class="col-lg-4">
-            <img class="rounded-circle mb-2" src="img/cv.jpg" alt="cv" width="140" height="140">
+            <a class="nav-link" href="cv.html"><img class="rounded-circle mb-2" src="img/cv.jpg" alt="cv" width="140" height="140"></a>
             <h2>My CV</h2>
             <p>Work experience, skills, technologies, education...</p>
             <p><a class="btn btn-danger" href="cv.html" role="button">Go »</a></p>
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-4">
-            <img class="rounded-circle mb-2" src="img/curiosity.jpg" alt="curiosity" width="140" height="140">
+            <a class="nav-link" href="curiosity.html"><img class="rounded-circle mb-2" src="img/curiosity.jpg" alt="curiosity" width="140" height="140"></a>
             <h2>Curiosity</h2>
             <p>Interesting people or subjects, science, rationality, skepticism...</p>
             <p><a class="btn btn-secondary" href="curiosity.html" role="button">Go »</a></p>
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-4">
-            <img class="rounded-circle mb-2" src="img/alive.jpg" alt="alive" width="140" height="140">
+            <a class="nav-link" href="alive.html"><img class="rounded-circle mb-2" src="img/alive.jpg" alt="alive" width="140" height="140"></a>
             <h2>Alive</h2>
             <p>What I like to do, hobbies, places, games, shows...</p>
-            <p><a class="btn btn-success disabled" href="" role="button">Go »</a></p>
+            <p><a class="btn btn-success" href="" role="button">Go »</a></p>
           </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
 
@@ -157,18 +157,26 @@
                 <p class="float-right"><a href="#" class="text-white">Back to top</a></p>
                 <p class="text-white">FrancescFG - <span id="footer-year"></span></p>
           </div>
+          <div class="row">
+            <div class="col-12">
+              <center>
+                <a href="https://github.com/francescgili" class="fa fa-github-alt"></a>
+                <a href="https://www.linkedin.com/in/francesc-gili-ferr%C3%A9-69637061/" class="fa fa-linkedin"></a>
+                <a hidden href="#" class="fa fa-facebook"></a>
+                <a href="https://twitter.com/francescf1" class="fa fa-twitter"></a>
+                <a href="https://www.instagram.com/francescgf1/" class="fa fa-instagram"></a>
+              </center>
+            </div>
+          </div>
       </footer>
     </main>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="js/vendor/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <!-- <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script> -->
-  
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="25" style="font-weight:bold;font-size:25pt;font-family:Arial, Helvetica, Open Sans, sans-serif">500x500</text></svg></body></html>
 
@@ -176,4 +184,7 @@
   
   var dt = new Date()
   $('#footer-year').html(dt.getFullYear())
+
+
+
 </script>
