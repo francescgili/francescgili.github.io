@@ -1,0 +1,60 @@
+.cursor-pointer{
+    cursor:pointer;
+}
+
+.grad {
+  background-image: linear-gradient(-90deg, #8e0604, #c42938);
+}
+
+
+ @-webkit-keyframes argh-my-eyes {
+    0%   { background-color: #950A0B; }
+    49% { background-color: #950A0B; }
+    50% { background-color: #d88b0f; }
+    99% { background-color: #d88b0f; }
+    100% { background-color: #950A0B; }
+  }
+  @-moz-keyframes argh-my-eyes {
+    0%   { background-color: #950A0B; }
+    49% { background-color: #950A0B; }
+    50% { background-color: #d88b0f; }
+    99% { background-color: #d88b0f; }
+    100% { background-color: #950A0B; }
+  }
+  @keyframes argh-my-eyes {
+    0%   { background-color: #950A0B; }
+    49% { background-color: #950A0B; }
+    50% { background-color: #d88b0f; }
+    99% { background-color: #d88b0f; }
+    100% { background-color: #950A0B; }
+  }
+
+.blink {
+  -webkit-animation: argh-my-eyes 1s infinite;
+  -moz-animation:    argh-my-eyes 1s infinite;
+  animation:         argh-my-eyes 1s infinite;
+}
+
+.font-border {
+    -webkit-text-stroke: 1px black; /* width and color */
+    font-family: sans-serif; color: white;
+}
+
+.progress {
+    text-align:center;
+}
+.progress-value {
+    position:absolute;
+     left: 0;  right: 0; top: 440;
+
+}
+
+
+/*@media only screen and (max-width: 300px) {
+
+  .progress-value {
+      position:absolute;
+       left: 0;  right: 0; top: 400;
+
+  }
+}*/
