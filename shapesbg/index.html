@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!-- Own Style -->
+        <link rel="stylesheet" href="css/style.css">
+        <meta name="robots" content="noindex">
+        <!-- Font Awesome -->
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+        <script src="https://kit.fontawesome.com/cf8af18458.js"></script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <script src="https://greasyfork.org/scripts/2350-filesaver-js/code/filesaverjs.js?version=6255"></script>
+    
+        <title>Shapes</title>
+    </head>
+    
+    <body style="background-color: grey">
+        <div id="" class="container">
+            <br>
+
+            <div class="row" >
+                <div class="col-2 text-center m-t-30">
+                    <h1 class=""><i class="fas fa-shapes"></i> Shapes</h1>
+                    
+                    
+                    <div id="shapes_list">
+                        <img id="yellow2" rotation="4" src="img/yellow2.png" class="shape img-fluid mb-1 border">
+                        <img id="red2" rotation="4" src="img/red2.png" class="shape img-fluid mb-1 border">
+                        <img id="blue2" rotation="4" src="img/blue2.png" class="shape img-fluid mb-1 border">
+                        <img id="green2" rotation="6" src="img/green2.png" class="shape img-fluid mb-1 border">
+                        <img id="orange2" rotation="4" src="img/orange2.png" class="shape img-fluid mb-1 border">
+                        <img id="white2" rotation="4" src="img/white2.png" class="shape img-fluid mb-1 border">
+                    </div>
+                    
+                </div>
+                <div class="col-8 text-center m-t-30">
+
+                    <div class="row text-center">
+                            <h1 class="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id="btnSave" class="fa fa-save cursor-pointer"></i> <span id="board-name" contenteditable="true" class="form-group contentEditable">Board</span></h1>
+                        <div id="fig-div" class="col-12 text-center m-t-30">
+                            
+                           <img id="big-base" src="img/base.png" class="fishes img-fluid">
+                           
+                           <img hidden id="big-yellow" src="img/yellow.png" class=" img-fluid border border-2">
+                           <img hidden id="big-red" src="img/red.png" class=" img-fluid border border-2">
+                           <img hidden id="big-blue" src="img/blue.png" class=" img-fluid border border-2">
+                           <img id="big-green" src="img/green.png" class="fish_1 testcss img-fluid border border-2">
+                           <img hidden id="big-orange" src="img/orange.png" class=" img-fluid border border-2">
+                           <img hidden id="big-white" src="img/white.png" class=" img-fluid border border-2">
+                           <img hidden id="big-yellow2" src="img/yellow2.png" class=" img-fluid border border-2">
+                           <img hidden id="big-red2" src="img/red2.png" class=" img-fluid border border-2">
+                           <img hidden id="big-blue2" src="img/blue2.png" class=" img-fluid border border-2">
+                           <img hidden id="big-green2" src="img/green2.png" class=" img-fluid border border-2">                         
+                           <img hidden id="big-orange2" src="img/orange2.png" class=" img-fluid border border-2">
+                           <img hidden id="big-white2" src="img/white2.png" class=" img-fluid border border-2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center m-t-30">
+                            <h1 class=""><i class="fas fa-hammer"></i> Actions</h1>
+                            <div class="row">
+                                <div class="col-5 text-center m-t-30"></div>
+                                <div class="col-2 text-center m-t-30">
+                                    <img id="selected_shape" name="green" src="img/green.png" class="img-fluid">
+                                </div>
+                                <div class="col-5 text-center m-t-30"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center m-t-10">
+
+                                    <div class="row mt-5">
+                                        <div class="col-2 text-center">
+                                            <i class="remove fas fa-minus-circle fa-4x cursor-pointer ml-4 ml-4"></i>
+                                            <i hidden class="add fas fa-plus-circle fa-4x cursor-pointer ml-4 ml-4"></i>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <i class="geo fas fa-sync-alt fa-4x cursor-pointer ml-4 ml-4"></i>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <i class="up fas fa-sort-amount-up-alt fa-4x cursor-pointer ml-4 ml-4"></i>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <i class="down fas fa-sort-amount-down-alt fa-4x cursor-pointer ml-4 ml-4"></i>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <i class="vertic fas fa-arrows-alt-v fa-4x cursor-pointer ml-4 ml-4"></i>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <i class="horiz fas fa-arrows-alt-h fa-4x cursor-pointer ml-4 ml-4"></i>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+
+
+                    
+                </div>
+                <div class="col-2 text-center  m-t-30">
+                    <h1><i class="fas fa-stopwatch"></i> <span id="minutes">10</span>:<span id="seconds">00</span></h1>                    
+                    
+                    <div id="shapes_list">
+                        <img id="yellow" rotation="4" src="img/yellow.png" class="shape img-fluid mb-1 border">
+                        <img id="red" rotation="4" src="img/red.png" class="shape img-fluid mb-1 border">
+                        <img id="blue" rotation="4" src="img/blue.png" class="shape img-fluid mb-1 border">
+                        <img id="green" rotation="6" src="img/green.png" class="shape img-fluid mb-1 border">
+                        <img id="orange" rotation="4" src="img/orange.png" class="shape img-fluid mb-1 border">
+                        <img id="white" rotation="4" src="img/white.png" class="shape img-fluid mb-1 border">
+                    </div>
+                    
+                </div>
+            </div>
+            
+                    <!-- <button hidden id="" class="btn btn-primary m-t-30 m-b-30"><i class="fa fa-share-square"></i> </button>
+                    <p hidden id="clear_list" class="cursor-pointer"> <i class="fa fa-trash"></i><p> -->
+          <!--   <div class="row">
+                <div class="col-12 text-center m-t-30">
+                    <h1 class="">Francesc Gili</h1>
+                    <p>Bla bla dsad djasod sjdos djsao djsaod jasodj.</p>
+                </div>
+            </div>
+       
+            <div class="row">
+                <div class="col-12 text-center">
+                    aaaa
+                </div>
+            </div> -->
+        </div>
+        <!-- div class="section">
+            <img class="img-fluid" src="img/head-bar-2.png"/>
+            ddfsf
+        </div> -->
+    
+    </body>
+    
+</html>
+
+<!-- Optional JavaScript -->
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript">    
+$( document ).ready(function() {
+
+    var shapesOnBoard = ['green'] 
+    //var shapesOnBoard = ['yellow', 'blue','green','orange', 'white', 
+    //'yellow2', 'red2', 'blue2','green2','red','orange2', 'white2' ];
+
+
+    // ROTATE
+    $('.geo').click(function(event){
+        var a = $('#big-'+$('#selected_shape').attr('name'));  
+        
+        noclasses = true;
+
+        if ( a.hasClass( "fho" ) ) {
+            a.removeClass('fho');
+            a.addClass('r90fve');
+            noclasses = false;
+            console.log('r1')
+            event.finish()
+        }
+
+        if ( a.hasClass( "rm90" ) ) {
+            a.removeClass('rm90');
+            noclasses = false;
+            console.log('r2')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90fho" ) ) {
+            a.removeClass('r90fho');
+            a.addClass('fho');
+            noclasses = false;
+            console.log('r3')
+            event.finish()
+        }
+
+        if ( a.hasClass( "fve" ) ) {
+            a.removeClass('fve');
+            a.addClass('r90fho');
+            noclasses = false;
+            console.log('r4')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90" ) ) {
+            a.removeClass('r90');
+            a.addClass('r180');
+            noclasses = false;
+            console.log('r5')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r180" ) ) {
+            a.removeClass('r180');
+            a.addClass('rm90');
+            noclasses = false;
+            console.log('r6')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90fve" ) ) {
+            a.removeClass('r90fve');
+            a.addClass('fve');
+            noclasses = false;
+            console.log('r7')
+            event.finish()
+        }
+
+        if(noclasses){
+            a.addClass('r90');
+            console.log('r8')
+        }
+
+    })
+
+    // SELECT SHAPE
+    $('.shape').click(function(event){
+
+        $('#selected_shape').attr('src', 'img/'+event.target.id+'.png')
+        $('#selected_shape').attr('name', ''+event.target.id)
+        //$('.rotate').attr('name', ''+event.target.getAttribute('name'))
+        //document.getElementByClass('.rotate').id = ''+event.target.id;
+
+      if ( -1 != $.inArray(''+event.target.id, shapesOnBoard) ){
+        //alert('si',event.target.id)
+        $('.remove').attr('hidden',false)
+        $('.add').attr('hidden',true)
+        $('.geo').attr('hidden',false)
+        $('.up').attr('hidden',false)
+        $('.down').attr('hidden',false)
+        $('.horiz').attr('hidden',false)
+        $('.vertic').attr('hidden',false)
+
+      } else {
+        //alert('no',event.target.id)
+        $('.remove').attr('hidden',true)
+        $('.add').attr('hidden',false)
+        $('.geo').attr('hidden',true)
+        $('.up').attr('hidden',true)
+        $('.down').attr('hidden',true)
+        $('.horiz').attr('hidden',true)
+        $('.vertic').attr('hidden',true)
+
+      }
+
+    })
+    $('.add').click(function(event){
+        selected = $('#selected_shape');
+      if ( -1 != $.inArray(selected.attr('name'), shapesOnBoard) ){
+        //alert('si',event.target.id)
+        $('.remove').attr('hidden',true)
+        $('.add').attr('hidden',false)
+        $('.geo').attr('hidden',false)
+        $('.up').attr('hidden',false)
+        $('.down').attr('hidden',false)
+        $('.horiz').attr('hidden',false)
+        $('.vertic').attr('hidden',false)
+        $('#'+selected.attr('name')).addClass('border-info')
+      } else {
+        //alert('no',event.target.id)
+        shapesOnBoard.push(selected.attr('name'))
+        up(selected.attr('name'))
+        $('.remove').attr('hidden',false)
+        $('.add').attr('hidden',true)
+        $('.geo').attr('hidden',false)
+        $('.up').attr('hidden',false)
+        $('.down').attr('hidden',false)
+        $('.horiz').attr('hidden',false)
+        $('.vertic').attr('hidden',false)
+        $('#big-'+selected.attr('name')).attr('hidden',false)
+        $('#big-'+selected.attr('name')).className = '';
+        $('#big-'+selected.attr('name')).addClass('img-fluid')  
+        $('#'+selected.attr('name')).addClass('border-info')  
+        console.log('selected',selected.attr('name'))  
+      }
+
+    })
+
+    $('.remove').click(function(event){
+        selected = $('#selected_shape');
+      if ( -1 != $.inArray(selected.attr('name'), shapesOnBoard) ){
+        //alert('si',event.target.id)
+        shapesOnBoard.push(selected.attr('name'))
+        shapesOnBoard = shapesOnBoard.filter(function(e) { return e !== selected.attr('name') })
+        $('.remove').attr('hidden',true)
+        $('.add').attr('hidden',false)
+        $('.geo').attr('hidden',true)
+        $('.up').attr('hidden',true)
+        $('.down').attr('hidden',true)
+        $('.horiz').attr('hidden',true)
+        $('.vertic').attr('hidden',true)
+        $('#big-'+selected.attr('name')).attr('hidden',true)
+        $('#'+selected.attr('name')).removeClass('border-info')
+        console.log('selected',selected.attr('name'), shapesOnBoard)  
+      } else {
+        $('.remove').attr('hidden',false)
+        $('.add').attr('hidden',true)
+        $('.geo').attr('hidden',true)
+        $('.up').attr('hidden',true)
+        $('.down').attr('hidden',true)
+        $('.horiz').attr('hidden',true)
+        $('.vertic').attr('hidden',true)
+        $('#'+selected.attr('name')).removeClass('border-info')
+      }
+
+    })
+
+    $('.up').click(function(event) {
+        up(selected.attr('name'));
+    })
+
+    $('.down').click(function(event) {
+        down(selected.attr('name'));
+    })
+
+    $('.horiz').click(function(event) {
+        var a = $('#big-'+$('#selected_shape').attr('name'));  
+
+        noclasses = true;
+
+        if ( a.hasClass( "fho" ) ) {
+            a.removeClass('fho');            
+            noclasses = false;
+            console.log('h1')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r180" ) ) {
+            a.removeClass('r180');
+            a.addClass('fve');
+            noclasses = false;
+            console.log('h2')
+            event.finish()
+        }
+
+        if ( a.hasClass( "rm90" ) ) {
+            a.removeClass('rm90');
+            a.addClass('r90fve');
+            noclasses = false;
+            console.log('h3')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90fve" ) ) {
+            a.removeClass('r90fve');
+            a.addClass('rm90');
+            noclasses = false;
+            console.log('h4')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90fho" ) ) {
+            a.removeClass('r90fho');
+            a.addClass('r90');
+            noclasses = false;
+            console.log('h5')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90" ) ) {
+            a.removeClass('r90');
+            a.addClass('r90fho');
+            noclasses = false;
+            console.log('h6')
+            event.finish()
+        }
+
+        if ( a.hasClass( "fve" ) ) {
+            a.removeClass('fve');
+            a.addClass('r180');
+            noclasses = false;
+            console.log('h7')
+            event.finish()
+        }
+
+        if(noclasses){
+            a.addClass('fho');
+            console.log('h8')
+        }
+
+    })
+
+    $('.vertic').click(function(event) {
+        var a = $('#big-'+$('#selected_shape').attr('name'));  
+
+        noclasses = true;
+
+        if ( a.hasClass( "fho" ) ) {
+            a.removeClass('fho');
+            a.addClass('r180');
+            noclasses = false;
+            console.log('v1')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r180" ) ) {
+            a.removeClass('r180');
+            a.addClass('fho');
+            noclasses = false;
+            console.log('v2')
+            event.finish()
+        }
+
+        if ( a.hasClass( "rm90" ) ) {
+            a.removeClass('rm90');
+            a.addClass('r90fho');
+            noclasses = false;
+            console.log('v3')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90fve" ) ) {
+            a.removeClass('r90fve');
+            a.addClass('r90');
+            noclasses = false;
+            console.log('v4')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90fho" ) ) {
+            a.removeClass('r90fho');
+            a.addClass('rm90');
+            noclasses = false;
+            console.log('v5')
+            event.finish()
+        }
+
+        if ( a.hasClass( "r90" ) ) {
+            a.removeClass('r90');
+            a.addClass('r90fve');
+            noclasses = false;
+            console.log('v6')
+            event.finish()
+        }
+
+        if ( a.hasClass( "fve" ) ) {
+            a.removeClass('fve');
+            noclasses = false;
+            console.log('v7')
+            event.finish()
+        }
+
+        if(noclasses){
+            a.addClass('fve');
+            console.log('v8')
+        }
+    })
+
+    function up(id){
+        console.log('shapesOnBoard',shapesOnBoard)
+        console.log('shapesOnBoard[(shapesOnBoard.length-1)]',shapesOnBoard[(shapesOnBoard.length-1)])
+        temp = []; count = 0; last = false;
+        if (shapesOnBoard[(shapesOnBoard.length-1)] != id) {
+            notlast = true;
+            console.log('not the last')
+        }else{
+            notlast = false;
+            //$('#big-'+id).removeClass('fish_'+(shapesOnBoard.length-1))
+            //$('#big-'+id).addClass('fish_'+(shapesOnBoard.length-1))
+        }
+
+            shapesOnBoard.forEach(function(element) {              
+            $('#big-'+element).removeClass('fish_'+count)
+              if ( id == element ) {
+                if (notlast) {
+                    temp.push(shapesOnBoard[count+1])                    
+                }
+
+                if ( -1 != $.inArray(element, temp) ){
+                }else{
+                    temp.push(element);
+                }
+
+              } else {
+                if ( -1 != $.inArray(element, temp) ){
+                }else{
+                    temp.push(element);
+                }
+              }
+              count++;
+            });
+        
+        count = 0;
+        temp.forEach(function(element) {
+            $('#big-'+element).removeClass('fish_'+count)
+            $('#big-'+element).addClass('fish_'+count)
+            count++;
+        });
+
+        shapesOnBoard = temp;
+        console.log('temp',temp)
+    }
+
+    
+    function down(id){
+        console.log('shapesOnBoard',shapesOnBoard)
+        console.log('first',shapesOnBoard[0])
+        temp = []; count = shapesOnBoard.length-1; last = false;
+        if (shapesOnBoard[0] != id) {
+            notlast = true;
+            console.log('not the last')
+        }else{
+            notlast = false;
+        }
+        
+        var i;
+        for (i = shapesOnBoard.length-1; i > -1; i--) { 
+            $('#big-'+shapesOnBoard[i]).removeClass('fish_'+i)
+            console.log('id', '#big-'+shapesOnBoard[i], 'remove', 'fish_'+i)
+              if ( id == shapesOnBoard[i]) {
+                if (notlast) {
+                    temp.push(shapesOnBoard[i-1])                    
+                }
+
+                if ( -1 != $.inArray(shapesOnBoard[i], temp) ){
+                }else{
+                    temp.push(shapesOnBoard[i]);
+                }
+
+              } else {
+                if ( -1 != $.inArray(shapesOnBoard[i], temp) ){
+                }else{
+                    temp.push(shapesOnBoard[i]);
+                }
+              }
+        }    
+
+        console.log(temp)
+        var j; temp2 = []; count=0;
+        for (j = temp.length-1; j > -1; j--) {
+            temp2.push(temp[j])
+            $('#big-'+temp[j]).removeClass('fish_'+count)
+            $('#big-'+temp[j]).addClass('fish_'+count)
+            console.log('jid', '#big-'+temp[j], 'add', 'fish_'+count)
+            count++;
+        }
+        console.log(temp2)
+
+        shapesOnBoard = temp2;
+        
+    }
+
+
+
+
+    $("#btnSave").click(function() { 
+        html2canvas($('#fig-div').get(0)).then( function (canvas) {
+            //console.log(canvas);
+                canvas.setAttribute("hidden", true);
+                document.body.appendChild(canvas);
+
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, $('#board-name').html()+$('#minutes').html()+$('#seconds').html()+".png"); 
+                });
+        });
+    });
+
+    var first_click = true;
+
+    $("body").click(function(event1) {
+
+        if (first_click) {
+
+            first_click = false;
+
+            var time_sound = new Audio('time.mp3');
+                time_sound.play();
+
+            var myTimer = setInterval(function(event2) {
+
+                minutes = parseInt($('#minutes').html());
+                seconds = parseInt($('#seconds').html());
+                
+
+                if (seconds == 0 && minutes == 0) {
+                    console.log("timeout")
+                    $('#minutes').blink()
+                    $('#seconds').blink()
+                    var alarm_sound = new Audio('alarm.mp3');
+                    alarm_sound.play();
+                    time_sound.pause();
+                    clearInterval(myTimer);
+                    return 0;
+                }
+
+                if ( seconds > 0) {
+                    seconds = seconds - 1;
+                } else {
+                    if( minutes != 0){
+                        seconds = 59;
+                        minutes = minutes - 1;
+                    }
+                }
+
+                if (minutes < 10) {
+                    $('#minutes').html("0"+minutes)
+                } else {
+                    $('#minutes').html(minutes)
+                }
+
+                if (seconds < 10) {
+                    $('#seconds').html("0"+seconds)
+                } else {
+                    $('#seconds').html(seconds)
+                }
+
+            }, 1000);
+        }
+    })
+
+    (function($) {
+    $.fn.blink = function(options) {
+        var defaults = { delay: 500 };
+        var options = $.extend(defaults, options);
+        return $(this).each(function(idx, itm) {
+            var handle = setInterval(function() {
+                if ($(itm).css("visibility") === "visible") {
+                    $(itm).css('visibility', 'hidden');
+                } else {
+                    $(itm).css('visibility', 'visible');
+                }
+            }, options.delay);
+
+            $(itm).data('handle', handle);
+        });
+    }
+    $.fn.unblink = function() {
+        return $(this).each(function(idx, itm) {
+            var handle = $(itm).data('handle');
+            if (handle) {
+                clearInterval(handle);
+                $(itm).data('handle', null);
+                $(itm).css('visibility', 'inherit');
+            }
+        });
+    }
+}(jQuery))
+
+}) // document
+</script>

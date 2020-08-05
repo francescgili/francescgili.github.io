@@ -1,0 +1,192 @@
+.m-t-30 {
+	margin-top: 30px !important; 
+}
+.m-b-30 {
+	margin-bottom: 30px !important; 
+}
+
+.m-l-5 {
+	margin-left: 30px !important;
+}
+
+h1 { 
+	font-family: monospace; 
+	font-size: 30px; 
+	font-style: normal; 
+	font-variant: normal; 
+	font-weight: 700; 
+	line-height: 36px; 
+
+} 
+
+.blue-bar{
+	background-color: lightblue;
+}
+
+.head-bar{
+	background: url(/img/head-bar.png) no-repeat;
+	min-height: 200px;
+}
+.head-bar-size{
+	height: 200px;
+}
+
+.mini-title{
+    margin: 0 -4px 10px 0;
+    letter-spacing: 4px;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.grey-background {
+	background-color: #F0F8FF;
+}
+
+.cursor-pointer{
+	cursor:pointer;
+}
+
+.fishes
+	{
+		position: relative;
+		top: 0;
+		left: 0;
+		z-index: -1;
+	}
+
+.fish_0
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 1;
+}
+
+.fish_1
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 2;
+}
+
+.fish_2
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 3;
+}
+
+.fish_3
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 4;
+}
+
+.fish_4
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 5;
+}
+
+.fish_5
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 6;
+}
+
+.fish_6
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 7;
+}
+
+.fish_7
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 8;
+}
+
+.fish_8
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 9;
+}
+
+.fish_9
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 10;
+}
+
+.fish_10
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 11;
+}
+
+.fish_11
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 12;
+}
+
+.fish_12
+{
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	z-index: 13;
+}
+
+
+.r90 {
+	transform: rotate(90deg);
+}
+
+.r180 {
+	transform: rotate(180deg);
+}
+
+.rm90 {
+	transform: rotate(-90deg);
+}
+
+.fho {
+	transform: scaleX(-1);
+}
+
+.fve {
+	transform: scaleY(-1);
+}
+
+.r90fve {
+	transform: rotate(-90deg) scaleY(-1);
+
+}
+
+.r90fho {
+	transform: rotate(-90deg) scaleX(-1);
+
+}
+
