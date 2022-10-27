@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!-- Own Style -->
+        <link rel="stylesheet" href="css/style.css">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+        <title>Shopping List</title>
+    </head>
+    
+    <body>
+        <div id="gallery-items" class="container">
+            <br>
+
+            <div class="row">
+                <div class="col-9 text-center mt-5">
+                    <h1 class=""><i class="fa fa-shopping-cart"></i> SHOPPING ITEMS</h1>
+                    
+
+                    <div id="items-body" class="row m-b-60">
+                       <!-- <div id="a4-paper_div" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <img id="a4-paper" style="width:150px; height:150px;" class="cursor-pointer img-fluid" src="img/shopping/a4-paper.jpg"/>
+                                </div>
+                                <div class="text-center col-12">
+                                    <p class="p-t-20 mini-title">A4 Paper</p>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>                       
+                    
+                       <div id="air-wick_div" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <img id="air-wick" style="width:150px; height:150px;" class="cursor-pointer img-fluid" src="img/shopping/air-wick.jpg"/>
+                                </div>
+                                <div class="text-center col-12">
+                                    <p class="p-t-20 mini-title">Air Wick</p>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>           -->             
+                    </div>
+
+
+
+                    
+                </div>
+                <div class="col-3 text-center grey-background mt-5">
+                    <h1 class=""><i class="fa fa-shopping-basket"></i> LIST</h1>
+                    
+                    <div>
+                        <i hidden id="load_button" class="fa fa-folder-open-o cursor-pointer"></i> 
+                        <i hidden id="save_button" class="m-l-5 fa fa-save cursor-pointer"></i>
+                    </div>
+                    
+                    <div id="shopping_list">
+                    </div>
+                    
+                    <button hidden id="copy_button" class="btn btn-primary m-t-30 m-b-30"><i class="fa fa-copy"></i> Copy List</button>
+                    <p hidden id="clear_list" class="cursor-pointer">Clear List <i class="fa fa-trash"></i><p>
+                </div>
+            </div>           
+      
+        </div>
+       
+    <div hidden id="copy-div"></div>
+    </body>
+    
+</html>
+
+<!-- Optional JavaScript -->
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    
+$( document ).ready(function() {
+    console.log( "ready!" );
+
+    var items = ["a4-paper.jpg","air-wick.jpg","apples.jpg","asparagus.jpg","aubergines.jpg","avocado.jpg","baby-food.jpg","bacalhau.jpg","bags-freezer.jpg","baking-powder.jpg","bananas.jpg","basil.jpg","batteries.jpg","beans.jpg","beans-green.jpg","beans-red.jpg","bechamel.jpg","bin-bags.jpg","bleach.jpg","blueberries.jpg","body-wash.jpg","bread-panini.jpg","bread-white.jpg","broccoli.jpg","butter.jpg","burger-buns.jpg","burger-fish-patties.jpg","burger-chicken-patties.jpg","cannon-ink-540.jpg","carrots.jpg","cereals-k.jpg","cheese.jpg","cheese-mozzarella.jpg","chicken.jpg","chick-peas.jpg","chocolate.jpg","cinnamon.jpg","clothes-freshener.jpg","coffee.jpg","cookies.jpg","coriander.jpg","cougrettes.jpg","croissants.jpg","cucumber.jpg","cumin.jpg","curry.jpg","cuscus.jpg","deodorant.jpg","dishwasher.jpg","eggs.jpg","fish.jpg","flour.jpg","garlic.jpg","garlic-powder.jpg","grapes.jpg","hand-wash.jpg","hummus.jpg","ketchup.jpg","kitchen-clothes.jpg","kiwis.jpg","lemons.jpg","lettuce.jpg","listerine.jpg","mayo.jpg","milk.jpg","milk-condensed.jpg","milk-oat.jpg","mixed-seeds.jpg","mushrooms.jpg","napkins.jpg","nappies.jpg","nivea-body.jpg","nivea-hand.jpg","nuts.jpg","oil-sunflower.jpg","olive-oil.jpg","olives-black.jpg","olives-green.jpg","onions.jpg","orange-juice.jpg","oranges.jpg","oregano.jpg","parsley-powder.jpg","pasta.jpg","patata-palla.jpg","pate.jpg","peanut-butter.jpg","pepper-black.jpg","peppers.jpg","pharata.jpg","philadelphia.jpg","pizza.jpg","potatoes.jpg","potato-smash.jpg","potato-wedges.jpg","quinoa.jpg","rice.jpg","salmon.jpg","salt.jpg","sanitary-pads.jpg","scourer.jpg","scrub-sponge.jpg","sea-salted-crackers.jpg","spinach.jpg","strepsils.jpg","sugar.jpg","tangerines.jpg","tea.jpg","tin-foil.jpg","toddler-milk.jpg","toilet-paper.jpg","tomatoes.jpg","tomato-sauce.jpg","tooth-brush.jpg","tooth-paste.jpg","tuna.jpg","vicks-vaporub.jpg","washing-powder.jpg","yogurts.jpg"];
+
+    var arrayLength = items.length;
+    for (var i = 0; i < arrayLength; i++) {
+        
+        base_html = '<div id="{{NAME}}_div" class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><div class="row"><div class="col-12 text-center"><img id="{{NAME}}" style="width:150px; height:150px;" class="cursor-pointer img-fluid" src="img/shopping/{{FILE}}"/></div><div class="text-center col-12"><p class="p-t-20 mini-title">{{NAME}}</p><br></div></div></div>';
+        name = items[i].replace('.jpg', '');
+        replaced_html = base_html.replace('{{NAME}}', name);
+        replaced_html = replaced_html.replace('{{NAME}}', name);
+        replaced_html = replaced_html.replace('{{NAME}}', name);
+        replaced_html = replaced_html.replace('{{FILE}}', items[i]);
+
+        div = document.getElementById('items-body');
+        div.innerHTML += replaced_html;
+    }
+
+    var arrayList = [];
+    var elements = 0;
+
+    $('#gallery-items').on('click', 'img', function(event){
+        //console.log(event.target.id)
+        $('#'+event.target.id+'_div').attr('hidden', true);
+        
+        arrayList[event.target.id] = event.target.id;
+        array_to_div();
+    })
+
+    function array_to_div(){
+        $('#shopping_list').html('')
+        elements = 0;
+        for (var key in arrayList) {
+            //console.log("key " + arrayList[key]);
+            shopping_list = $('#shopping_list').html();
+            $('#shopping_list').html(shopping_list + ' - <span class="list-element">'+ arrayList[key] +'</span> <span class="cursor-pointer" id="remove_'+ arrayList[key] +'"><i id="remove_'+arrayList[key]+'_icon" class="fa fa-remove"></i></span><br>')
+            elements++;
+        }
+
+        emptyArray = []
+        if(elements == 0){
+            $('#copy_button').attr('hidden', true);
+            $('#clear_list').attr('hidden', true);
+            //console.log('empty')
+        }else{
+            //console.log('not empty')
+            $('#copy_button').attr('hidden', false);
+            $('#clear_list').attr('hidden', false);
+        }
+
+        $('#copy_button').html('<i class="fa fa-copy"></i> Copy List');
+        $('#copy_button').removeClass('btn-success');
+        $('#copy_button').removeClass('btn-danger');
+        $('#copy_button').addClass('btn-primary');
+    }//function
+
+    $('#shopping_list').on('click', 'span', function(event){
+        id = event.target.id.split("_");
+        //console.log(id[1])
+        delete arrayList[id[1]];
+        $('#'+id[1]+'_div').attr('hidden', false);
+        
+        array_to_div();
+    })
+
+    $('#clear_list').click(function(event)
+    {
+        for (var key in arrayList) {
+           $('#'+key+'_div').attr('hidden', false);     
+        }
+        arrayList = [];
+        array_to_div();
+    })
+
+    $('#copy_button').click(function(event)
+    {   
+        $('#copy-div').attr("hidden",false)
+        listText = '';
+        $(".list-element" ).each(function( index ) {
+            listText += $( this ).html() + ", \n";
+        });
+        var dummy = $('<textarea id="temp-copy-input">').val(listText).appendTo('#copy-div').select()
+        document.execCommand('copy');
+        $('#copy-div').attr("hidden",true)
+        //$('#temp-copy-input').remove();            
+    })
+    
+    $('#load_button').click(function(event)
+    {
+        alert('lol')
+    })
+
+    $('#save_button').click(function(event)
+    {
+        alert('lol save')
+    })
+    
+})
+
+</script>
