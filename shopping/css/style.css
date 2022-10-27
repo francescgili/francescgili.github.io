@@ -1,0 +1,50 @@
+.m-t-30 {
+	margin-top: 30px !important; 
+}
+.m-b-30 {
+	margin-bottom: 30px !important; 
+}
+
+.m-l-5 {
+	margin-left: 30px !important;
+}
+
+h1 { 
+	font-family: monospace; 
+	font-size: 30px; 
+	font-style: normal; 
+	font-variant: normal; 
+	font-weight: 700; 
+	line-height: 36px; 
+
+} 
+
+.blue-bar{
+	background-color: lightblue;
+}
+
+.head-bar{
+	background: url(/img/head-bar.png) no-repeat;
+	min-height: 200px;
+}
+.head-bar-size{
+	height: 200px;
+}
+
+.mini-title{
+    margin: 0 -4px 10px 0;
+    letter-spacing: 4px;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.grey-background {
+	background-color: #F0F8FF;
+}
+
+.cursor-pointer{
+	cursor:pointer;
+}
+
+
