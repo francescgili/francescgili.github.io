@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZoomGuess - Who is this?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #111827; /* gray-900 */
+        color: #ffffff;
+      }
+
+      /* Custom Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeInUp {
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .animate-bounceIn {
+        animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+          forwards;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://aistudiocdn.com/react@^19.2.1",
+          "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+          "react/": "https://aistudiocdn.com/react@^19.2.1/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app" class="antialiased min-h-screen flex flex-col">
+      <!-- START SCREEN -->
+      <div
+        id="start-screen"
+        class="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4 text-center"
+      >
+        <div
+          class="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-700"
+        >
+          <div class="relative h-64 w-full">
+            <img
+              id="cover-image"
+              src=""
+              alt="Game Cover"
+              class="w-full h-full object-cover opacity-80"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent flex items-end justify-center pb-6"
+            >
+              <h1
+                class="text-4xl font-extrabold text-white tracking-tight drop-shadow-lg"
+              >
+                Guess The <span class="text-blue-500">Face</span>
+              </h1>
+            </div>
+          </div>
+
+          <div class="p-8">
+            <p class="text-gray-300 mb-8 text-lg">
+              Can you identify the person<br />from a zoomed-in photo?
+            </p>
+
+            <div class="space-y-4">
+              <div
+                class="flex justify-center space-x-8 text-sm text-gray-400 mb-6"
+              >
+                <div class="flex flex-col items-center">
+                  <span
+                    id="total-levels-count"
+                    class="font-bold text-white text-xl"
+                    >0</span
+                  >
+                  <span>Rounds</span>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="font-bold text-white text-xl">∞</span>
+                  <span>Fun</span>
+                </div>
+              </div>
+
+              <button
+                id="btn-start"
+                class="w-full py-4 px-6 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-blue-900/50"
+                type="button"
+              >
+                Start Game
+              </button>
+
+              <button
+                id="btn-reset-players-start"
+                class="w-full py-3 px-6 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-xl transition-all"
+                type="button"
+              >
+                Reset Players
+              </button>
+              <p class="text-xs text-gray-500">
+                (Resets the players/points list)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GAME SCREEN -->
+      <div
+        id="game-screen"
+        class="hidden flex-col items-center min-h-screen bg-gray-900 p-4"
+      >
+        <!-- Players Board -->
+        <div class="w-full max-w-md mx-auto mb-6">
+          <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 shadow-lg">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex flex-col text-left">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-300">
+                  Players
+                </h3>
+                <p class="text-xs text-gray-500">
+                  Reveal the answer, then click a player to give +1.
+                </p>
+              </div>
+              <button
+                id="btn-reset-players"
+                class="text-xs text-gray-400 hover:text-white transition-colors"
+                type="button"
+              >
+                Reset
+              </button>
+            </div>
+            <div id="players-board" class="flex flex-wrap gap-2"></div>
+            <p id="players-board-empty" class="text-sm text-gray-500">
+              No players yet. Add one when you reveal the answer.
+            </p>
+          </div>
+        </div>
+
+        <!-- Main Card -->
+        <div
+          class="w-full max-w-md bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden flex flex-col"
+        >
+          <!-- Image Area -->
+          <div class="relative aspect-square w-full bg-black">
+            <img
+              id="game-image"
+              src=""
+              alt="Guess who?"
+              class="w-full h-full object-cover transition-opacity duration-500"
+            />
+
+            <!-- Overlay Label (now shows progress + state) -->
+            <div
+              class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10"
+            >
+              <span
+                id="image-label"
+                class="text-xs font-bold uppercase tracking-widest text-white"
+              >
+                ?
+              </span>
+            </div>
+          </div>
+
+          <!-- Content Area -->
+          <div class="p-6 flex flex-col items-center text-center space-y-6">
+            <!-- Phase 1: Playing -->
+            <div id="view-playing" class="w-full space-y-6">
+              <h2 class="text-2xl font-bold text-white">Who is this?</h2>
+              <p class="text-gray-400 text-sm">
+                Study the features closely.<br />When you have a guess, reveal the
+                answer.
+              </p>
+              <button
+                id="btn-reveal"
+                class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-colors shadow-lg shadow-indigo-900/50"
+                type="button"
+              >
+                Show Solution
+              </button>
+            </div>
+
+            <!-- Phase 2: Revealed -->
+            <div id="view-revealed" class="hidden w-full space-y-4">
+              <div class="animate-fadeInUp">
+                <h2
+                  id="solution-name"
+                  class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400"
+                >
+                  Name Placeholder
+                </h2>
+                <p class="text-gray-400 text-xs mt-1 uppercase tracking-wider">
+                  #<span id="solution-id">1</span>
+                </p>
+              </div>
+
+              <!-- Player Scoring -->
+              <div
+                class="w-full bg-gray-900/40 border border-gray-700 rounded-xl p-4 text-left space-y-3"
+              >
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <div class="text-sm font-bold text-white">Who guessed it?</div>
+                    <div class="text-xs text-gray-400">
+                      Type a new player name and add +1, or click an existing
+                      player below.
+                    </div>
+                  </div>
+                  <button
+                    id="btn-undo-point"
+                    type="button"
+                    class="px-3 py-2 text-xs bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    disabled
+                    title="Undo last +1"
+                  >
+                    Undo
+                  </button>
+                </div>
+
+                <div class="flex gap-2">
+                  <input
+                    id="player-name-input"
+                    type="text"
+                    placeholder="Player name"
+                    class="flex-1 px-3 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    autocomplete="off"
+                  />
+                  <button
+                    id="btn-add-player-point"
+                    type="button"
+                    class="px-4 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 font-bold text-white transition-colors"
+                  >
+                    +1
+                  </button>
+                </div>
+
+                <div id="players-list" class="flex flex-wrap gap-2"></div>
+                <p id="players-list-empty" class="text-xs text-gray-500">
+                  No players yet — add the first one above.
+                </p>
+
+                <div id="round-awards" class="text-xs text-gray-400 pt-1 hidden">
+                  Awarded this round:
+                  <span
+                    id="round-awards-names"
+                    class="text-gray-200 font-semibold"
+                  ></span>
+                </div>
+              </div>
+
+              <!-- Next Button -->
+              <div id="next-button-container" class="w-full animate-bounceIn">
+                <button
+                  id="btn-next"
+                  class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-900/50 flex items-center justify-center gap-2"
+                  type="button"
+                >
+                  <span id="btn-next-text">Next Person</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUMMARY SCREEN -->
+      <div
+        id="summary-screen"
+        class="hidden min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4"
+      >
+        <div
+          class="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700 text-center"
+        >
+          <h2 class="text-3xl font-extrabold text-white mb-2">Game Over!</h2>
+          <p class="text-gray-400 mb-8">Leaderboard</p>
+
+          <div
+            class="mb-8 p-4 bg-gray-900/40 border border-gray-700 rounded-xl text-left"
+          >
+            <div class="text-sm font-bold text-white mb-3">Leaderboard</div>
+            <div id="final-leaderboard" class="space-y-2"></div>
+            <p
+              id="final-leaderboard-empty"
+              class="text-sm text-gray-500 hidden"
+            >
+              No players yet.
+            </p>
+          </div>
+
+          <button
+            id="btn-restart"
+            class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg"
+            type="button"
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // --- Constants & Data ---
+
+      // Helper to parse "number-Name_Surname"
+      const parsePersonName = (filename) => {
+        const namePart = filename.replace(/\.(jpg|png|jpeg|webp)$/i, "");
+        const textPart = namePart.replace(/^\d+-/, "");
+        return textPart.replace(/_/g, " ");
+      };
+
+      // Simulated file system content
+      const MOCK_FILES = [
+        { zoomed: "1.png", solution: "1-Leonardo Di Caprio.png" },
+        { zoomed: "2.png", solution: "2-Tom Cruise.png" },
+        { zoomed: "3.png", solution: "3-Zendaya.png" },
+        { zoomed: "4.png", solution: "4-Idris Elba.png" },
+        { zoomed: "5.png", solution: "5-Marc.png" },
+        { zoomed: "6.png", solution: "6-Ed Sheeran.png" },
+        { zoomed: "7.png", solution: "7-Drake.png" },
+        { zoomed: "8.png", solution: "8-Daniel.png" },
+        { zoomed: "9.png", solution: "9-Serena Williams.png" },
+        { zoomed: "10.png", solution: "10-Rowan Atkinson.png" },
+        { zoomed: "11.png", solution: "11-Jennifer Lopez.png" },
+        { zoomed: "12.png", solution: "12-Siscu.png" },
+        { zoomed: "13.png", solution: "13-Cristiano Ronaldo.png" },
+        { zoomed: "14.png", solution: "14-Lewis Hamilton.png" },
+        { zoomed: "15.png", solution: "15-Dwayne Johnson.png" },
+        { zoomed: "16.png", solution: "16-Miriam.png" },
+        { zoomed: "17.png", solution: "17-King Charles III.png" },
+        { zoomed: "18.png", solution: "18-Taylor Swift.png" },
+        { zoomed: "19.png", solution: "19-Daniel Radcliffe.png" },
+        { zoomed: "20.png", solution: "20-José Mourinho.png" },
+        { zoomed: "21.png", solution: "21-Eloi.png" },
+        { zoomed: "22.png", solution: "22-Boris Johnson.png" },
+        { zoomed: "23.png", solution: "23-Donald Trump.png" },
+        { zoomed: "24.png", solution: "24-Estefania.png" },
+        { zoomed: "25.png", solution: "25-Denzel Washington.png" },
+        { zoomed: "26.png", solution: "26-Kevin Hart.png" },
+        { zoomed: "27.png", solution: "27-Brad Pitt.png" },
+        { zoomed: "28.png", solution: "28-Jennifer.png" },
+        { zoomed: "29.png", solution: "29-Scarlett Johansson.png" },
+        { zoomed: "30.png", solution: "30-Vin Diesel.png" },
+        { zoomed: "31.png", solution: "31-Pep Guardiola.png" },
+        { zoomed: "32.png", solution: "32-Maria Dolors.png" },
+        { zoomed: "33.png", solution: "33-Antonio Banderas.png" },
+        { zoomed: "34.png", solution: "34-Rafa Nadal.png" },
+        { zoomed: "35.png", solution: "35-Lamine Yamal.png" },
+        { zoomed: "36.png", solution: "36-Pau.png" },
+        { zoomed: "37.png", solution: "37-Raffaella Carrà.png" },
+        { zoomed: "38.png", solution: "38-Leo Messi.png" },
+        { zoomed: "39.png", solution: "39-Biel.png" },
+        { zoomed: "40.png", solution: "40-Jackie Chan.png" },
+        { zoomed: "41.png", solution: "41-Elijah Wood.png" },
+        { zoomed: "42.png", solution: "42-Alba.png" },
+        { zoomed: "43.png", solution: "43-Paul McCartney.png" },
+        { zoomed: "44.png", solution: "44-Freddie Mercury.png" },
+        { zoomed: "45.png", solution: "45-Stephen Hawking.png" },
+        { zoomed: "46.png", solution: "46-Ferran Adrià.png" },
+        { zoomed: "47.png", solution: "47-Jordi Evole.png" },
+        { zoomed: "48.png", solution: "48-Dayana.png" },
+      ];
+
+      const GAME_LEVELS = MOCK_FILES.map((file, index) => ({
+        id: index + 1,
+        zoomedImage: `pics/${file.zoomed}`,
+        solutionImage: `pics/${file.solution}`,
+        parsedName: parsePersonName(file.solution),
+      }));
+
+      const COVER_IMAGE = "cover.png";
+
+      // --- Player State ---
+      const PLAYERS_STORAGE_KEY = "zoomguess_players_v1";
+      let players = {}; // key -> { name, points }
+      let lastPointActions = []; // stack for undo
+
+      const normalizePlayerKey = (name) =>
+        name.trim().replace(/\s+/g, " ").toLowerCase();
+
+      const formatPlayerName = (name) => name.trim().replace(/\s+/g, " ");
+
+      function loadPlayersFromStorage() {
+        try {
+          const raw = localStorage.getItem(PLAYERS_STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object") players = parsed;
+        } catch (e) {}
+      }
+
+      function savePlayersToStorage() {
+        try {
+          localStorage.setItem(PLAYERS_STORAGE_KEY, JSON.stringify(players));
+        } catch (e) {}
+      }
+
+      function resetPlayers() {
+        players = {};
+        lastPointActions = [];
+        savePlayersToStorage();
+        renderPlayersEverywhere();
+      }
+
+      function getPlayersSorted() {
+        return Object.entries(players)
+          .map(([key, val]) => ({
+            key,
+            name: val.name,
+            points: val.points || 0,
+          }))
+          .sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            return a.name.localeCompare(b.name);
+          });
+      }
+
+      function addPointToPlayer(name) {
+        const cleaned = formatPlayerName(name);
+        if (!cleaned) return;
+
+        const key = normalizePlayerKey(cleaned);
+        if (!players[key]) players[key] = { name: cleaned, points: 0 };
+        players[key].points = (players[key].points || 0) + 1;
+
+        lastPointActions.push({ key, delta: +1, roundIndex: currentState.index });
+        currentState.roundAwards.push(players[key].name);
+
+        savePlayersToStorage();
+        renderPlayersEverywhere();
+        renderRoundAwards();
+      }
+
+      function undoLastPoint() {
+        const last = lastPointActions.pop();
+        if (!last) return;
+
+        if (players[last.key]) {
+          players[last.key].points = (players[last.key].points || 0) - 1;
+          if (players[last.key].points <= 0) delete players[last.key];
+        }
+
+        if (last.roundIndex === currentState.index) {
+          currentState.roundAwards.pop();
+        }
+
+        savePlayersToStorage();
+        renderPlayersEverywhere();
+        renderRoundAwards();
+      }
+
+      // --- Game State ---
+      let currentState = {
+        index: 0,
+        isRevealed: false,
+        roundAwards: [],
+      };
+
+      // --- DOM Elements ---
+      const screens = {
+        start: document.getElementById("start-screen"),
+        game: document.getElementById("game-screen"),
+        summary: document.getElementById("summary-screen"),
+      };
+
+      const elements = {
+        coverImage: document.getElementById("cover-image"),
+        totalLevelsCount: document.getElementById("total-levels-count"),
+
+        gameImage: document.getElementById("game-image"),
+        imageLabel: document.getElementById("image-label"),
+
+        viewPlaying: document.getElementById("view-playing"),
+        viewRevealed: document.getElementById("view-revealed"),
+
+        solutionName: document.getElementById("solution-name"),
+        solutionId: document.getElementById("solution-id"),
+
+        nextButtonText: document.getElementById("btn-next-text"),
+
+        playersBoard: document.getElementById("players-board"),
+        playersBoardEmpty: document.getElementById("players-board-empty"),
+
+        playerNameInput: document.getElementById("player-name-input"),
+        addPlayerPointBtn: document.getElementById("btn-add-player-point"),
+        undoPointBtn: document.getElementById("btn-undo-point"),
+        playersList: document.getElementById("players-list"),
+        playersListEmpty: document.getElementById("players-list-empty"),
+
+        roundAwards: document.getElementById("round-awards"),
+        roundAwardsNames: document.getElementById("round-awards-names"),
+
+        finalLeaderboard: document.getElementById("final-leaderboard"),
+        finalLeaderboardEmpty: document.getElementById("final-leaderboard-empty"),
+      };
+
+      const buttons = {
+        start: document.getElementById("btn-start"),
+        reveal: document.getElementById("btn-reveal"),
+        next: document.getElementById("btn-next"),
+        restart: document.getElementById("btn-restart"),
+        resetPlayers: document.getElementById("btn-reset-players"),
+        resetPlayersStart: document.getElementById("btn-reset-players-start"),
+      };
+
+      // --- Helpers / Rendering ---
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function setOverlayLabel() {
+        const progress = `${currentState.index + 1}/${GAME_LEVELS.length}`;
+        const state = currentState.isRevealed ? "Solution" : "?";
+        elements.imageLabel.textContent = `${progress} • ${state}`;
+      }
+
+      function renderPlayersEverywhere() {
+        renderPlayersButtons(elements.playersBoard, elements.playersBoardEmpty);
+        renderPlayersButtons(elements.playersList, elements.playersListEmpty);
+        elements.undoPointBtn.disabled = lastPointActions.length === 0;
+      }
+
+      function renderPlayersButtons(container, emptyEl) {
+        const list = getPlayersSorted();
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+          emptyEl.classList.remove("hidden");
+          return;
+        }
+        emptyEl.classList.add("hidden");
+
+        list.forEach((p) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className =
+            "px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm text-gray-100 border border-gray-600 transition-colors flex items-center gap-2";
+          btn.innerHTML = `<span class="font-semibold">${escapeHtml(
+            p.name
+          )}</span><span class="text-xs text-gray-300 bg-black/20 px-2 py-1 rounded-md">${p.points}</span>`;
+
+          btn.addEventListener("click", () => {
+            if (!currentState.isRevealed) return;
+            addPointToPlayer(p.name);
+          });
+
+          if (!currentState.isRevealed) {
+            btn.title = "Reveal the answer to award points";
+            btn.classList.add("opacity-80");
+          } else {
+            btn.title = "Give +1";
+          }
+
+          container.appendChild(btn);
+        });
+      }
+
+      function renderRoundAwards() {
+        if (!currentState.isRevealed || currentState.roundAwards.length === 0) {
+          elements.roundAwards.classList.add("hidden");
+          elements.roundAwardsNames.textContent = "";
+          return;
+        }
+
+        const seen = new Set();
+        const uniq = currentState.roundAwards.filter((n) => {
+          const k = normalizePlayerKey(n);
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        });
+
+        elements.roundAwards.classList.remove("hidden");
+        elements.roundAwardsNames.textContent = uniq.join(", ");
+      }
+
+      function renderLeaderboard() {
+        const list = getPlayersSorted();
+        elements.finalLeaderboard.innerHTML = "";
+
+        if (list.length === 0) {
+          elements.finalLeaderboardEmpty.classList.remove("hidden");
+          return;
+        }
+        elements.finalLeaderboardEmpty.classList.add("hidden");
+
+        list.forEach((p, idx) => {
+          const row = document.createElement("div");
+          row.className =
+            "flex items-center justify-between bg-gray-800/60 border border-gray-700 rounded-lg px-3 py-2";
+          row.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="text-xs text-gray-400 w-6">#${idx + 1}</div>
+              <div class="font-semibold text-gray-100">${escapeHtml(p.name)}</div>
+            </div>
+            <div class="text-sm font-bold text-emerald-300">${p.points}</div>
+          `;
+          elements.finalLeaderboard.appendChild(row);
+        });
+      }
+
+      // --- Screen / Game Flow ---
+      function showScreen(screenName) {
+        Object.values(screens).forEach((el) => {
+          el.classList.add("hidden");
+          if (screenName === "game" || screenName === "summary")
+            el.classList.remove("flex");
+        });
+
+        const target = screens[screenName];
+        target.classList.remove("hidden");
+
+        if (screenName === "game" || screenName === "summary") {
+          target.classList.add("flex");
+        }
+      }
+
+      function startGame() {
+        currentState = {
+          index: 0,
+          isRevealed: false,
+          roundAwards: [],
+        };
+
+        loadLevel(0);
+        showScreen("game");
+      }
+
+      function loadLevel(index) {
+        if (index >= GAME_LEVELS.length) {
+          endGame();
+          return;
+        }
+
+        const level = GAME_LEVELS[index];
+        currentState.index = index;
+        currentState.isRevealed = false;
+        currentState.roundAwards = [];
+
+        elements.gameImage.src = level.zoomedImage;
+
+        elements.viewPlaying.classList.remove("hidden");
+        elements.viewRevealed.classList.add("hidden");
+
+        elements.solutionName.textContent = level.parsedName;
+        elements.solutionId.textContent = level.id;
+
+        // Next button label is updated on reveal
+        elements.playerNameInput.value = "";
+        renderRoundAwards();
+        setOverlayLabel();
+        renderPlayersEverywhere();
+      }
+
+      function revealSolution() {
+        const level = GAME_LEVELS[currentState.index];
+        currentState.isRevealed = true;
+
+        elements.gameImage.src = level.solutionImage;
+
+        elements.viewPlaying.classList.add("hidden");
+        elements.viewRevealed.classList.remove("hidden");
+
+        if (currentState.index >= GAME_LEVELS.length - 1) {
+          elements.nextButtonText.textContent = "See Results";
+        } else {
+          elements.nextButtonText.textContent = "Next Person";
+        }
+
+        setOverlayLabel();
+        renderPlayersEverywhere();
+        renderRoundAwards();
+
+        setTimeout(() => elements.playerNameInput.focus(), 50);
+      }
+
+      function nextLevel() {
+        loadLevel(currentState.index + 1);
+      }
+
+      function endGame() {
+        renderLeaderboard();
+        showScreen("summary");
+      }
+
+      // --- Boot ---
+      function init() {
+        elements.coverImage.src = COVER_IMAGE;
+        elements.totalLevelsCount.textContent = GAME_LEVELS.length;
+
+        loadPlayersFromStorage();
+        renderPlayersEverywhere();
+
+        showScreen("start");
+      }
+
+      // --- Events ---
+      buttons.start.addEventListener("click", startGame);
+      buttons.reveal.addEventListener("click", revealSolution);
+      buttons.next.addEventListener("click", nextLevel);
+      buttons.restart.addEventListener("click", startGame);
+
+      buttons.resetPlayers.addEventListener("click", resetPlayers);
+      buttons.resetPlayersStart.addEventListener("click", resetPlayers);
+
+      elements.addPlayerPointBtn.addEventListener("click", () => {
+        if (!currentState.isRevealed) return;
+        addPointToPlayer(elements.playerNameInput.value);
+        elements.playerNameInput.value = "";
+        elements.playerNameInput.focus();
+      });
+
+      elements.playerNameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (!currentState.isRevealed) return;
+          addPointToPlayer(elements.playerNameInput.value);
+          elements.playerNameInput.value = "";
+        }
+      });
+
+      elements.undoPointBtn.addEventListener("click", () => {
+        if (!currentState.isRevealed) return;
+        undoLastPoint();
+      });
+
+      // --- Start ---
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find the Screenshot - Guess the Place</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #020617; /* slate-950 */
+        color: #e5e7eb;
+      }
+
+      /* Custom Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeInUp {
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .animate-bounceIn {
+        animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+          forwards;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://aistudiocdn.com/react@^19.2.1",
+          "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+          "react/": "https://aistudiocdn.com/react@^19.2.1/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app" class="antialiased min-h-screen flex flex-col">
+      <!-- START SCREEN -->
+      <div
+        id="start-screen"
+        class="flex flex-col items-center justify-center min-h-screen bg-slate-950 p-4 text-center"
+      >
+        <div
+          class="max-w-md w-full bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-sky-800"
+        >
+          <div class="relative h-64 w-full">
+            <img
+              id="cover-image"
+              src=""
+              alt="Game Cover"
+              class="w-full h-full object-cover opacity-80"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent flex items-end justify-center pb-6"
+            >
+              <h1
+                class="text-4xl font-extrabold text-white tracking-tight drop-shadow-lg"
+              >
+                Find the <span class="text-sky-400">Screenshot</span>
+              </h1>
+            </div>
+          </div>
+
+          <div class="p-8">
+            <p class="text-slate-300 mb-8 text-lg">
+              Can you identify the famous place<br />from a zoomed-in Google Maps
+              screenshot?
+            </p>
+
+            <div class="space-y-4">
+              <div
+                class="flex justify-center space-x-8 text-sm text-slate-400 mb-6"
+              >
+                <div class="flex flex-col items-center">
+                  <span
+                    id="total-levels-count"
+                    class="font-bold text-white text-xl"
+                    >0</span
+                  >
+                  <span>Rounds</span>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="font-bold text-white text-xl">∞</span>
+                  <span>Fun</span>
+                </div>
+              </div>
+
+              <button
+                id="btn-start"
+                class="w-full py-4 px-6 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl text-xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-sky-900/60"
+                type="button"
+              >
+                Start Game
+              </button>
+
+              <!-- ✅ Players reset (same as other game) -->
+              <button
+                id="btn-reset-players-start"
+                class="w-full py-3 px-6 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition-all border border-slate-700"
+                type="button"
+              >
+                Reset Players
+              </button>
+              <p class="text-xs text-slate-500">
+                (Resets the players/points list)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GAME SCREEN -->
+      <div
+        id="game-screen"
+        class="hidden flex-col items-center min-h-screen bg-slate-950 p-4"
+      >
+        <!-- ✅ Timer-only bar (score/progress removed) -->
+        <div class="w-full max-w-md mx-auto mb-6">
+          <div
+            class="bg-slate-900 rounded-xl p-4 border border-sky-900 shadow-lg flex items-center justify-between"
+          >
+            <div class="text-xs text-slate-400 uppercase tracking-wider">
+              Time Left
+            </div>
+            <span
+              id="timer"
+              class="text-xl font-bold text-sky-400 tracking-widest cursor-pointer select-none"
+              title="Click to pause / resume"
+            >
+              35:00
+            </span>
+          </div>
+        </div>
+
+        <!-- ✅ Players Board (same as other game) -->
+        <div class="w-full max-w-md mx-auto mb-6">
+          <div class="bg-slate-900 rounded-xl p-4 border border-sky-900 shadow-lg">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex flex-col text-left">
+                <h3
+                  class="text-sm font-bold uppercase tracking-wider text-slate-200"
+                >
+                  Players
+                </h3>
+                <p class="text-xs text-slate-500">
+                  Reveal the location, then click a player to give +1.
+                </p>
+              </div>
+              <button
+                id="btn-reset-players"
+                class="text-xs text-slate-400 hover:text-white transition-colors"
+                type="button"
+              >
+                Reset
+              </button>
+            </div>
+            <div id="players-board" class="flex flex-wrap gap-2"></div>
+            <p id="players-board-empty" class="text-sm text-slate-500">
+              No players yet. Add one when you reveal the location.
+            </p>
+          </div>
+        </div>
+
+        <!-- Main Card -->
+        <div
+          class="w-full max-w-md bg-slate-900 rounded-2xl shadow-2xl border border-sky-900 overflow-hidden flex flex-col"
+        >
+          <!-- Image Area -->
+          <div class="relative aspect-square w-full bg-black">
+            <img
+              id="game-image"
+              src=""
+              alt="Mystery map view"
+              class="w-full h-full object-cover transition-opacity duration-500"
+            />
+
+            <!-- ✅ Overlay Label now shows progress + state (e.g., 2/30 • ?) -->
+            <div
+              class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10"
+            >
+              <span
+                id="image-label"
+                class="text-xs font-bold uppercase tracking-widest text-white"
+              >
+                1/1 • ?
+              </span>
+            </div>
+          </div>
+
+          <!-- Content Area -->
+          <div class="p-6 flex flex-col items-center text-center space-y-6">
+            <!-- Phase 1: Playing -->
+            <div id="view-playing" class="w-full space-y-6">
+              <h2 class="text-2xl font-bold text-white">Where is this?</h2>
+              <p class="text-slate-400 text-sm">
+                Study the zoomed-in map carefully.<br />Find the exact location in
+                your phone.
+              </p>
+              <button
+                id="btn-reveal"
+                class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-colors shadow-lg shadow-cyan-900/60"
+                type="button"
+              >
+                Show Location
+              </button>
+            </div>
+
+            <!-- Phase 2: Revealed -->
+            <div id="view-revealed" class="hidden w-full space-y-4">
+              <div class="animate-fadeInUp">
+                <h2
+                  id="solution-name"
+                  class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400"
+                >
+                  Place Placeholder
+                </h2>
+                <p class="text-slate-400 text-xs mt-1 uppercase tracking-wider">
+                  #<span id="solution-id">1</span>
+                </p>
+              </div>
+
+              <!-- ✅ Player Scoring (same as other game) -->
+              <div
+                class="w-full bg-slate-950/40 border border-slate-800 rounded-xl p-4 text-left space-y-3"
+              >
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <div class="text-sm font-bold text-white">Who found it?</div>
+                    <div class="text-xs text-slate-400">
+                      Type a new player name and add +1, or click an existing
+                      player below.
+                    </div>
+                  </div>
+                  <button
+                    id="btn-undo-point"
+                    type="button"
+                    class="px-3 py-2 text-xs bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    disabled
+                    title="Undo last +1"
+                  >
+                    Undo
+                  </button>
+                </div>
+
+                <div class="flex gap-2">
+                  <input
+                    id="player-name-input"
+                    type="text"
+                    placeholder="Player name"
+                    class="flex-1 px-3 py-3 rounded-lg bg-slate-900 border border-slate-800 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    autocomplete="off"
+                  />
+                  <button
+                    id="btn-add-player-point"
+                    type="button"
+                    class="px-4 py-3 rounded-lg bg-sky-500 hover:bg-sky-400 font-bold text-slate-950 transition-colors"
+                  >
+                    +1
+                  </button>
+                </div>
+
+                <div id="players-list" class="flex flex-wrap gap-2"></div>
+                <p id="players-list-empty" class="text-xs text-slate-500">
+                  No players yet — add the first one above.
+                </p>
+
+                <div id="round-awards" class="text-xs text-slate-400 pt-1 hidden">
+                  Awarded this round:
+                  <span
+                    id="round-awards-names"
+                    class="text-slate-200 font-semibold"
+                  ></span>
+                </div>
+              </div>
+
+              <!-- ✅ Next Button (shown after reveal) -->
+              <div id="next-button-container" class="w-full animate-bounceIn">
+                <button
+                  id="btn-next"
+                  class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-900/60 flex items-center justify-center gap-2"
+                  type="button"
+                >
+                  <span id="btn-next-text">Next Place</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUMMARY SCREEN -->
+      <div
+        id="summary-screen"
+        class="hidden min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4"
+      >
+        <div
+          class="max-w-md w-full bg-slate-900 rounded-2xl shadow-2xl p-8 border border-sky-900 text-center"
+        >
+          <h2 class="text-3xl font-extrabold text-white mb-2">
+            All locations revealed!
+          </h2>
+          <p class="text-slate-400 mb-8">Leaderboard</p>
+
+          <div class="mb-6 p-4 bg-slate-800/70 rounded-xl">
+            <div class="text-sm text-slate-300">Time left</div>
+            <div id="final-time-left" class="text-2xl font-bold text-sky-400">
+              35:00
+            </div>
+          </div>
+
+          <!-- ✅ Leaderboard -->
+          <div
+            class="mb-8 p-4 bg-slate-950/40 border border-slate-800 rounded-xl text-left"
+          >
+            <div class="text-sm font-bold text-white mb-3">Leaderboard</div>
+            <div id="final-leaderboard" class="space-y-2"></div>
+            <p id="final-leaderboard-empty" class="text-sm text-slate-500 hidden">
+              No players yet.
+            </p>
+          </div>
+
+          <button
+            id="btn-restart"
+            class="w-full py-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg"
+            type="button"
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* -----------------------------
+         Constants & Data
+      ------------------------------ */
+
+      const parsePersonName = (filename) => {
+        const namePart = filename.replace(/\.(jpg|png|jpeg|webp)$/i, "");
+        const textPart = namePart.replace(/^\d+-/, "");
+        return textPart.replace(/_/g, " ");
+      };
+
+      const MOCK_FILES = [
+        { zoomed: "1.png", solution: "1-Eiffel Tower.png" },
+        { zoomed: "2.png", solution: "2-Statue of Liberty.png" },
+        { zoomed: "3.png", solution: "3-Golden Gate Bridge.png" },
+        { zoomed: "4.png", solution: "4-Cristo Redentor.png" },
+        { zoomed: "5.png", solution: "5-Basilica San Pietro.png" },
+        { zoomed: "6.png", solution: "6-The Great Pyramid of Giza.png" },
+        { zoomed: "7.png", solution: "7-Sagrada Familia.png" },
+        { zoomed: "8.png", solution: "8-Colosseum.png" },
+        { zoomed: "9.png", solution: "9-Niagara Falls.png" },
+        { zoomed: "10.png", solution: "10-Machu Picchu.png" },
+        { zoomed: "11.png", solution: "11-Sydney Opera House.png" },
+        { zoomed: "12.png", solution: "12-Parthenon.png" },
+        { zoomed: "13.png", solution: "13-Big Ben.png" },
+        { zoomed: "14.png", solution: "14-UE Rapitenca.png" },
+      ];
+
+      const GAME_LEVELS = MOCK_FILES.map((file, index) => ({
+        id: index + 1,
+        zoomedImage: `pics/${file.zoomed}`,
+        solutionImage: `pics/${file.solution}`,
+        parsedName: parsePersonName(file.solution),
+      }));
+
+      const COVER_IMAGE = "cover.png";
+
+      /* -----------------------------
+         Players (same system)
+      ------------------------------ */
+
+      const PLAYERS_STORAGE_KEY = "find_screenshot_players_v1";
+      let players = {}; // key -> { name, points }
+      let lastPointActions = [];
+
+      const normalizePlayerKey = (name) =>
+        name.trim().replace(/\s+/g, " ").toLowerCase();
+
+      const formatPlayerName = (name) => name.trim().replace(/\s+/g, " ");
+
+      function loadPlayersFromStorage() {
+        try {
+          const raw = localStorage.getItem(PLAYERS_STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === "object") players = parsed;
+        } catch (e) {}
+      }
+
+      function savePlayersToStorage() {
+        try {
+          localStorage.setItem(PLAYERS_STORAGE_KEY, JSON.stringify(players));
+        } catch (e) {}
+      }
+
+      function resetPlayers() {
+        players = {};
+        lastPointActions = [];
+        savePlayersToStorage();
+        renderPlayersEverywhere();
+      }
+
+      function getPlayersSorted() {
+        return Object.entries(players)
+          .map(([key, val]) => ({ key, name: val.name, points: val.points || 0 }))
+          .sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            return a.name.localeCompare(b.name);
+          });
+      }
+
+      function addPointToPlayer(name) {
+        const cleaned = formatPlayerName(name);
+        if (!cleaned) return;
+
+        const key = normalizePlayerKey(cleaned);
+        if (!players[key]) players[key] = { name: cleaned, points: 0 };
+        players[key].points = (players[key].points || 0) + 1;
+
+        lastPointActions.push({ key, delta: +1, roundIndex: currentState.index });
+        currentState.roundAwards.push(players[key].name);
+
+        savePlayersToStorage();
+        renderPlayersEverywhere();
+        renderRoundAwards();
+      }
+
+      function undoLastPoint() {
+        const last = lastPointActions.pop();
+        if (!last) return;
+
+        if (players[last.key]) {
+          players[last.key].points = (players[last.key].points || 0) - 1;
+          if (players[last.key].points <= 0) delete players[last.key];
+        }
+
+        if (last.roundIndex === currentState.index) {
+          currentState.roundAwards.pop();
+        }
+
+        savePlayersToStorage();
+        renderPlayersEverywhere();
+        renderRoundAwards();
+      }
+
+      /* -----------------------------
+         Game State
+      ------------------------------ */
+
+      let currentState = {
+        index: 0,
+        isRevealed: false,
+        hasEnded: false,
+        roundAwards: [],
+      };
+
+      /* -----------------------------
+         Timer
+      ------------------------------ */
+
+      const TIMER_DURATION = 35 * 60;
+      let timeLeft = TIMER_DURATION;
+      let timerInterval = null;
+      let isTimerRunning = false;
+
+      function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      }
+
+      function updateTimerUI() {
+        const timerEl = document.getElementById("timer");
+        timerEl.textContent = formatTime(timeLeft);
+
+        if (isTimerRunning) {
+          timerEl.classList.remove("text-yellow-400");
+          timerEl.classList.add("text-sky-400");
+        }
+      }
+
+      function startTimer() {
+        if (isTimerRunning || currentState.hasEnded) return;
+
+        isTimerRunning = true;
+        updateTimerUI();
+
+        timerInterval = setInterval(() => {
+          timeLeft = Math.max(0, timeLeft - 1);
+          updateTimerUI();
+
+          if (timeLeft === 0) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            endGame();
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+
+        const timerEl = document.getElementById("timer");
+        timerEl.classList.remove("text-sky-400");
+        timerEl.classList.add("text-yellow-400");
+      }
+
+      /* -----------------------------
+         DOM
+      ------------------------------ */
+
+      const screens = {
+        start: document.getElementById("start-screen"),
+        game: document.getElementById("game-screen"),
+        summary: document.getElementById("summary-screen"),
+      };
+
+      const elements = {
+        coverImage: document.getElementById("cover-image"),
+        totalLevelsCount: document.getElementById("total-levels-count"),
+
+        gameImage: document.getElementById("game-image"),
+        imageLabel: document.getElementById("image-label"),
+
+        viewPlaying: document.getElementById("view-playing"),
+        viewRevealed: document.getElementById("view-revealed"),
+
+        solutionName: document.getElementById("solution-name"),
+        solutionId: document.getElementById("solution-id"),
+
+        nextButtonText: document.getElementById("btn-next-text"),
+
+        // Players UI
+        playersBoard: document.getElementById("players-board"),
+        playersBoardEmpty: document.getElementById("players-board-empty"),
+
+        playerNameInput: document.getElementById("player-name-input"),
+        addPlayerPointBtn: document.getElementById("btn-add-player-point"),
+        undoPointBtn: document.getElementById("btn-undo-point"),
+        playersList: document.getElementById("players-list"),
+        playersListEmpty: document.getElementById("players-list-empty"),
+
+        roundAwards: document.getElementById("round-awards"),
+        roundAwardsNames: document.getElementById("round-awards-names"),
+
+        finalTimeLeft: document.getElementById("final-time-left"),
+        finalLeaderboard: document.getElementById("final-leaderboard"),
+        finalLeaderboardEmpty: document.getElementById("final-leaderboard-empty"),
+      };
+
+      const buttons = {
+        start: document.getElementById("btn-start"),
+        reveal: document.getElementById("btn-reveal"),
+        next: document.getElementById("btn-next"),
+        restart: document.getElementById("btn-restart"),
+        resetPlayers: document.getElementById("btn-reset-players"),
+        resetPlayersStart: document.getElementById("btn-reset-players-start"),
+      };
+
+      /* -----------------------------
+         Rendering helpers
+      ------------------------------ */
+
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function setOverlayLabel() {
+        const progress = `${currentState.index + 1}/${GAME_LEVELS.length}`;
+        const state = currentState.isRevealed ? "Solution" : "?";
+        elements.imageLabel.textContent = `${progress} • ${state}`;
+      }
+
+      function renderPlayersEverywhere() {
+        renderPlayersButtons(elements.playersBoard, elements.playersBoardEmpty);
+        renderPlayersButtons(elements.playersList, elements.playersListEmpty);
+        elements.undoPointBtn.disabled = lastPointActions.length === 0;
+      }
+
+      function renderPlayersButtons(container, emptyEl) {
+        const list = getPlayersSorted();
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+          emptyEl.classList.remove("hidden");
+          return;
+        }
+        emptyEl.classList.add("hidden");
+
+        list.forEach((p) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className =
+            "px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-sm text-slate-100 border border-slate-700 transition-colors flex items-center gap-2";
+          btn.innerHTML = `<span class="font-semibold">${escapeHtml(
+            p.name
+          )}</span><span class="text-xs text-slate-300 bg-black/20 px-2 py-1 rounded-md">${p.points}</span>`;
+
+          btn.addEventListener("click", () => {
+            if (!currentState.isRevealed) return;
+            addPointToPlayer(p.name);
+          });
+
+          if (!currentState.isRevealed) {
+            btn.title = "Reveal the location to award points";
+            btn.classList.add("opacity-80");
+          } else {
+            btn.title = "Give +1";
+          }
+
+          container.appendChild(btn);
+        });
+      }
+
+      function renderRoundAwards() {
+        if (!currentState.isRevealed || currentState.roundAwards.length === 0) {
+          elements.roundAwards.classList.add("hidden");
+          elements.roundAwardsNames.textContent = "";
+          return;
+        }
+
+        const seen = new Set();
+        const uniq = currentState.roundAwards.filter((n) => {
+          const k = normalizePlayerKey(n);
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        });
+
+        elements.roundAwards.classList.remove("hidden");
+        elements.roundAwardsNames.textContent = uniq.join(", ");
+      }
+
+      function renderLeaderboard() {
+        const list = getPlayersSorted();
+        elements.finalLeaderboard.innerHTML = "";
+
+        if (list.length === 0) {
+          elements.finalLeaderboardEmpty.classList.remove("hidden");
+          return;
+        }
+        elements.finalLeaderboardEmpty.classList.add("hidden");
+
+        list.forEach((p, idx) => {
+          const row = document.createElement("div");
+          row.className =
+            "flex items-center justify-between bg-slate-900/60 border border-slate-800 rounded-lg px-3 py-2";
+          row.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="text-xs text-slate-500 w-6">#${idx + 1}</div>
+              <div class="font-semibold text-slate-100">${escapeHtml(p.name)}</div>
+            </div>
+            <div class="text-sm font-bold text-emerald-300">${p.points}</div>
+          `;
+          elements.finalLeaderboard.appendChild(row);
+        });
+      }
+
+      /* -----------------------------
+         Screen control
+      ------------------------------ */
+
+      function showScreen(screenName) {
+        Object.values(screens).forEach((el) => {
+          el.classList.add("hidden");
+          if (screenName === "game" || screenName === "summary")
+            el.classList.remove("flex");
+        });
+
+        const target = screens[screenName];
+        target.classList.remove("hidden");
+
+        if (screenName === "game" || screenName === "summary") {
+          target.classList.add("flex");
+        }
+      }
+
+      /* -----------------------------
+         Game logic
+      ------------------------------ */
+
+      function init() {
+        elements.coverImage.src = COVER_IMAGE;
+        elements.totalLevelsCount.textContent = GAME_LEVELS.length;
+
+        timeLeft = TIMER_DURATION;
+        updateTimerUI();
+
+        loadPlayersFromStorage();
+        renderPlayersEverywhere();
+
+        showScreen("start");
+      }
+
+      function startGame() {
+        currentState = {
+          index: 0,
+          isRevealed: false,
+          hasEnded: false,
+          roundAwards: [],
+        };
+
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timeLeft = TIMER_DURATION;
+        updateTimerUI();
+
+        loadLevel(0);
+
+        startTimer();
+        showScreen("game");
+      }
+
+      function loadLevel(index) {
+        if (index >= GAME_LEVELS.length) {
+          endGame();
+          return;
+        }
+
+        const level = GAME_LEVELS[index];
+        currentState.index = index;
+        currentState.isRevealed = false;
+        currentState.roundAwards = [];
+
+        elements.gameImage.src = level.zoomedImage;
+
+        elements.viewPlaying.classList.remove("hidden");
+        elements.viewRevealed.classList.add("hidden");
+
+        elements.solutionName.textContent = level.parsedName;
+        elements.solutionId.textContent = level.id;
+
+        elements.playerNameInput.value = "";
+        renderRoundAwards();
+        setOverlayLabel();
+        renderPlayersEverywhere();
+      }
+
+      /* ✅ Same behavior as your original: pause timer on reveal */
+      function revealSolution() {
+        pauseTimer();
+
+        const level = GAME_LEVELS[currentState.index];
+        currentState.isRevealed = true;
+
+        elements.gameImage.src = level.solutionImage;
+
+        elements.viewPlaying.classList.add("hidden");
+        elements.viewRevealed.classList.remove("hidden");
+
+        if (currentState.index >= GAME_LEVELS.length - 1) {
+          elements.nextButtonText.textContent = "See Results";
+        } else {
+          elements.nextButtonText.textContent = "Next Place";
+        }
+
+        setOverlayLabel();
+        renderPlayersEverywhere();
+        renderRoundAwards();
+
+        setTimeout(() => elements.playerNameInput.focus(), 50);
+      }
+
+      /* ✅ Same behavior as your original: restart timer on next */
+      function nextLevel() {
+        startTimer();
+        loadLevel(currentState.index + 1);
+      }
+
+      function endGame() {
+        if (currentState.hasEnded) return;
+        currentState.hasEnded = true;
+
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+
+        elements.finalTimeLeft.textContent = formatTime(timeLeft);
+        renderLeaderboard();
+
+        showScreen("summary");
+      }
+
+      /* -----------------------------
+         Events
+      ------------------------------ */
+
+      buttons.start.addEventListener("click", startGame);
+      buttons.reveal.addEventListener("click", revealSolution);
+      buttons.next.addEventListener("click", nextLevel);
+      buttons.restart.addEventListener("click", startGame);
+
+      buttons.resetPlayers.addEventListener("click", resetPlayers);
+      buttons.resetPlayersStart.addEventListener("click", resetPlayers);
+
+      document.getElementById("timer").addEventListener("click", () => {
+        if (isTimerRunning) pauseTimer();
+        else startTimer();
+      });
+
+      elements.addPlayerPointBtn.addEventListener("click", () => {
+        if (!currentState.isRevealed) return;
+        addPointToPlayer(elements.playerNameInput.value);
+        elements.playerNameInput.value = "";
+        elements.playerNameInput.focus();
+      });
+
+      elements.playerNameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (!currentState.isRevealed) return;
+          addPointToPlayer(elements.playerNameInput.value);
+          elements.playerNameInput.value = "";
+        }
+      });
+
+      elements.undoPointBtn.addEventListener("click", () => {
+        if (!currentState.isRevealed) return;
+        undoLastPoint();
+      });
+
+      /* -----------------------------
+         Boot
+      ------------------------------ */
+      init();
+    </script>
+  </body>
+</html>
